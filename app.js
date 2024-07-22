@@ -8,8 +8,7 @@ let thumbnailItemsDom = thumbnailBorderDom.querySelectorAll(".item");
 let timeDom = document.querySelector(".carousel .time");
 
 thumbnailBorderDom.appendChild(thumbnailItemsDom[0]);
-let timeRunning = 3000;
-let timeAutoNext = 7000;
+let timeRunning = 2000;
 
 nextDom.onclick = function () {
   showSlider("next");
@@ -18,10 +17,14 @@ nextDom.onclick = function () {
 prevDom.onclick = function () {
   showSlider("prev");
 };
+
+thumbnailItemsDom.forEach((thumbnail, index) => {
+  thumbnail.onclick = function () {
+    showSliderByIndex(index);
+  };
+});
+
 let runTimeOut;
-let runNextAuto = setTimeout(() => {
-  next.click();
-}, timeAutoNext);
 function showSlider(type) {
   let SliderItemsDom = SliderDom.querySelectorAll(".carousel .list .item");
   let thumbnailItemsDom = document.querySelectorAll(
@@ -41,10 +44,57 @@ function showSlider(type) {
   runTimeOut = setTimeout(() => {
     carouselDom.classList.remove("next");
     carouselDom.classList.remove("prev");
-  }, timeRunning);
-
-  clearTimeout(runNextAuto);
-  runNextAuto = setTimeout(() => {
-    next.click();
-  }, timeAutoNext);
+  }, 500); // Mengurangi waktu tunggu agar tombol dapat digunakan terus
 }
+
+function showSliderByIndex(index) {
+  let SliderItemsDom = SliderDom.querySelectorAll(".carousel .list .item");
+  let thumbnailItemsDom = document.querySelectorAll(
+    ".carousel .thumbnail .item"
+  );
+
+  while (index > 0) {
+    SliderDom.appendChild(SliderItemsDom[0]);
+    thumbnailBorderDom.appendChild(thumbnailItemsDom[0]);
+    index--;
+  }
+  carouselDom.classList.add("next");
+  clearTimeout(runTimeOut);
+  runTimeOut = setTimeout(() => {
+    carouselDom.classList.remove("next");
+  }, 500);
+}
+
+// Menambahkan event listener untuk hide dan show thumbnail
+thumbnailBorderDom.style.transition = "opacity 1s ease-in-out";
+thumbnailBorderDom.style.opacity = "1";
+
+let hideTimeout;
+function hideThumbnails() {
+  hideTimeout = setTimeout(() => {
+    thumbnailBorderDom.style.opacity = "0.5"; // Semi transparan saat hide
+  }, 2000);
+}
+
+function showThumbnails() {
+  clearTimeout(hideTimeout);
+  thumbnailBorderDom.style.opacity = "1";
+  hideThumbnails();
+}
+
+thumbnailBorderDom.addEventListener("mouseenter", showThumbnails);
+thumbnailBorderDom.addEventListener("mouseleave", hideThumbnails);
+hideThumbnails();
+
+// Menambahkan event listener untuk membesarkan thumbnail saat cursor menyentuh
+thumbnailItemsDom.forEach((thumbnail) => {
+  thumbnail.style.transition = "transform 0.3s ease-in-out";
+  thumbnail.addEventListener("mouseenter", () => {
+    thumbnail.style.transform = "scale(1.2)";
+    clearTimeout(hideTimeout); // Menghentikan hide saat cursor menyentuh thumbnail
+  });
+  thumbnail.addEventListener("mouseleave", () => {
+    thumbnail.style.transform = "scale(1)";
+    hideThumbnails(); // Memulai kembali hide saat cursor meninggalkan thumbnail
+  });
+});

@@ -9,9 +9,15 @@
   <body>
     <header>
       <nav>
-        <a href="">Home</a>
-        <a href="">Contacts</a>
-        <a href="">Info</a>
+        <a href="index.html">Home</a>
+        <a href="contacts.html">Contacts</a>
+        <div class="dropdownCV">
+          <a href="#">Download CV</a>
+          <div class="dropdown-content">
+            <a href="https://drive.google.com/file/d/your_pdf_file_id/view?usp=sharing" download="cv.pdf">PDF</a>
+            <a href="https://drive.google.com/file/d/your_png_file_id/view?usp=sharing" download="cv.png">PNG</a>
+          </div>
+        </div>
       </nav>
     </header>
 
@@ -22,7 +28,7 @@
         <div class="item">
           <img src="image/img1.jpg" />
           <div class="content">
-            <div class="author">Rizd Project</div>
+            <!-- <div class="author">Rizd Project</div> -->
             <div class="title">MY PORTFOLIO</div>
             <div class="topic">EKA NADIA APRILLINA</div>
             <div class="des">
@@ -140,6 +146,10 @@
       <!-- time running -->
       <div class="time"></div>
     </div>
+
+    <footer>
+      <p>&copy; 2023 rizd project. All rights reserved.</p>
+    </footer>
 
     <script src="app.js"></script>
   </body>
